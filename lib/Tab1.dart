@@ -18,18 +18,7 @@ class _Tab1State extends State<Tab1> {
   @override
   void initState() {
     super.initState();
-    login();
     getCurrentUser();
-  }
-
-  void login() async {
-    try {
-      final User = await _auth.signInWithEmailAndPassword(
-          email: 'sonali@gmail.com', password: 'muskan');
-      if (User != null) {}
-    } catch (e) {
-      print(e);
-    }
   }
 
   void getCurrentUser() async {

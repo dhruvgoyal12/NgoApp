@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ngo/afterRegister.dart';
 import 'login.dart';
 import 'authentication.dart';
+import 'tab.dart';
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -42,7 +43,7 @@ class _RootPageState extends State<RootPage> {
           onSignedin: _signedIn,
         );
       case AuthStatus.signedIn:
-        return AfterRegister();
+        return tab();
     }
   }
 }
