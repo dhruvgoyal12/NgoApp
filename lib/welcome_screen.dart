@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_last/main.dart';
 import 'package:flutter_app_last/rounded_button.dart';
+import 'authentication.dart';
 
 void main() {
   runApp(MyApp());
@@ -91,7 +92,9 @@ class welcome_screen extends StatelessWidget {
 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LoginScreen()));
+                                      builder: (context) => RootPage(
+              auth: Auth(),
+            )));
                            
                             }),
                       ),
