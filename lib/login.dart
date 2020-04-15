@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             PageTransition(
                                                 type: PageTransitionType
                                                     .rightToLeft,
-                                                child: AfterRegister()));
+                                                child: tab()));
                                       } else {
                                         Navigator.push(
                                             context,
