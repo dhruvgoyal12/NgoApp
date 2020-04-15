@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app_last/detailed_view2.dart';
+import 'detailed_view2.dart';
 
 final _auth = FirebaseAuth.instance;
 String loggedInUser;

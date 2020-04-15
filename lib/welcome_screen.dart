@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_last/main.dart';
-import 'package:flutter_app_last/rounded_button.dart';
+import 'package:ngo/main.dart';
+import 'package:ngo/rounded_button.dart';
 import 'authentication.dart';
+import 'root.dart';
 
 class welcome_screen extends StatelessWidget {
   static String id = "welcome_screen";

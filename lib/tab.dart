@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_app_last/Tab1.dart';
-import 'package:flutter_app_last/Tab2.dart';
-import 'package:flutter_app_last/welcome_screen.dart';
+import 'Tab1.dart';
+import 'Tab2.dart';
+import 'welcome_screen.dart';
 
 
 class tab extends StatelessWidget {

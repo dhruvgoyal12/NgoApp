@@ -7,6 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import 'alertUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'tab.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -262,7 +263,7 @@ class _CategoriesState extends State<Categories> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: AfterRegister()));
+                                    child: tab()));
                           } else {
                             var alertDialog = AlertUser(
                               title: 'None Selected',
