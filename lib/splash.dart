@@ -1,7 +1,7 @@
 import 'package:ngo/categories.dart';
 import 'package:ngo/register.dart';
 import 'package:ngo/root.dart';
-
+import 'welcome_screen.dart';
 import 'login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,9 +69,10 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
         context,
         PageTransition(
             type: PageTransitionType.fade,
-            child: RootPage(
-              auth: Auth(),
-            )
+            child: welcome_screen()
+//           RootPage(
+//               auth: Auth(),
+//             )
 //                LoginScreen(
 //              auth: Auth(),
 //            )
