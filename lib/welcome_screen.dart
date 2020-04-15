@@ -3,17 +3,6 @@ import 'package:flutter_app_last/main.dart';
 import 'package:flutter_app_last/rounded_button.dart';
 import 'authentication.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  static String id = "MyApp";
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: welcome_screen());
-  }
-}
 class welcome_screen extends StatelessWidget {
   static String id = "welcome_screen";
   @override
