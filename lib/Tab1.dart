@@ -60,8 +60,6 @@ class _Tab1State extends State<Tab1> {
                     List<Padding> messageWidgets = [];
                     for (var message in messages) {
                       final img_url = message.data["img_url"];
-                      final address = message.data["address"];
-                      final note = message.data["note"];
                       final time = message.data["time"];
                       final city = message.data["city"];
                       //final username= name from logged in user
@@ -167,6 +165,9 @@ class _Tab1State extends State<Tab1> {
                           EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                       children: messageWidgets,
                     ));
+                  }
+                  else{
+                    return Container();
                   }
                 },
               ),

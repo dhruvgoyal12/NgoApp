@@ -155,6 +155,8 @@ class _Tab2State extends State<Tab2> {
                         EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                     children: messageWidgets,
                   ));
+                } else {
+                  return Container();
                 }
               },
             ),
