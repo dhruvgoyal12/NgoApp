@@ -165,8 +165,7 @@ class _Tab1State extends State<Tab1> {
                           EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
                       children: messageWidgets,
                     ));
-                  }
-                  else{
+                  } else {
                     return Container();
                   }
                 },

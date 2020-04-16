@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Tab1.dart';
 import 'Tab2.dart';
-import 'welcome_screen.dart';
-
 
 class tab extends StatelessWidget {
   @override
@@ -12,6 +9,80 @@ class tab extends StatelessWidget {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
+          drawer: Drawer(
+              child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text('AAS - To help whoever Breaths',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('images/wel11.jpg'),
+                        fit: BoxFit.cover)),
+              ),
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.add_circle),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text('Change Category'),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.autorenew),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text('Change Password'),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.exit_to_app),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text('Logout'),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.delete),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text('Delete Account'),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          )),
           appBar: AppBar(
             backgroundColor: Colors.black87,
             bottom: TabBar(
@@ -39,5 +110,3 @@ class tab extends StatelessWidget {
     );
   }
 }
-
-
