@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ngo/afterRegister.dart';
 import 'package:ngo/categories.dart';
+import 'package:ngo/forgot.dart';
 import 'package:ngo/register.dart';
 import 'package:page_transition/page_transition.dart';
 import 'authentication.dart';
@@ -351,6 +352,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.white,
                                 letterSpacing: 0.5),
                           ),
+                          onTap: () {
+                            return Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.downToUp,
+                                    child: ForgotScreen()));
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),

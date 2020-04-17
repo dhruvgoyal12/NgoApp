@@ -15,17 +15,11 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-//  Future<bool> _onWillPop() async {
-//    setState(() {
-//      showSpinner = true;
-//    });
-//    await loggedinUser.delete();
-//    setState(() {
-//      showSpinner = false;
-//    });
-//    Navigator.pop(context);
-//    return true;
-//  }
+  Future<bool> _onWillPop() async {
+    await _auth.signOut();
+    Navigator.pop(context);
+    return true;
+  }
 
   final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -67,18 +61,21 @@ class _CategoriesState extends State<Categories> {
   String checked = 'images/smile.jpg';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.teal,
-      body: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: ListView(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  color: Colors.white,
-                  onPressed: () {
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.teal,
+        body: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: ListView(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    color: Colors.white,
+                    onPressed: () {
+                      _auth.signOut();
 //                    setState(() {
 //                      showSpinner = true;
 //                    });
@@ -86,230 +83,231 @@ class _CategoriesState extends State<Categories> {
 //                    setState(() {
 //                      showSpinner = false;
 //                    });
-                    Navigator.pop(context);
-                  },
-                ),
-                Container(width: 125, child: Row())
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      "Categories",
-                      style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 30),
-                  child: Text(
-                    "Select Categories you deal in",
-                    style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400),
+                      Navigator.pop(context);
+                    },
                   ),
-                )
-              ],
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height - 105,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(75)),
+                  Container(width: 125, child: Row())
+                ],
               ),
-              child: ListView(
-                primary: false,
-                padding: EdgeInsets.only(left: 25, right: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: 45),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 300,
-                      child: ListView(
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Tapped[0] = onTapped(0);
-                              });
-                            },
-                            child: Category(
-                              ic: Icon(
-                                Tapped[0]
-                                    ? Icons.highlight_off
-                                    : Icons.add_circle,
-                                color: Tapped[0] ? Colors.red : Colors.black,
-                              ),
-                              text: 'Food',
-                              img: 'images/food.jpg',
-                              color: Tapped[0] ? Colors.teal : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Tapped[1] = onTapped(1);
-                              });
-                            },
-                            child: Category(
-                              ic: Icon(
-                                Tapped[1]
-                                    ? Icons.highlight_off
-                                    : Icons.add_circle,
-                                color: Tapped[1] ? Colors.red : Colors.black,
-                              ),
-                              text: 'Shelter',
-                              img: 'images/food.jpg',
-                              color: Tapped[1] ? Colors.teal : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Tapped[2] = onTapped(2);
-                              });
-                            },
-                            child: Category(
-                              ic: Icon(
-                                Tapped[2]
-                                    ? Icons.highlight_off
-                                    : Icons.add_circle,
-                                color: Tapped[2] ? Colors.red : Colors.black,
-                              ),
-                              text: 'Clothes',
-                              img: 'images/food.jpg',
-                              color: Tapped[2] ? Colors.teal : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Tapped[3] = onTapped(3);
-                              });
-                            },
-                            child: Category(
-                              ic: Icon(
-                                Tapped[3]
-                                    ? Icons.highlight_off
-                                    : Icons.add_circle,
-                                color: Tapped[3] ? Colors.red : Colors.black,
-                              ),
-                              text: 'Women',
-                              img: 'images/food.jpg',
-                              color: Tapped[3] ? Colors.teal : Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Tapped[4] = onTapped(4);
-                              });
-                            },
-                            child: Category(
-                              ic: Icon(
-                                Tapped[4]
-                                    ? Icons.highlight_off
-                                    : Icons.add_circle,
-                                color: Tapped[4] ? Colors.red : Colors.black,
-                              ),
-                              text: 'Others',
-                              img: 'images/food.jpg',
-                              color: Tapped[4] ? Colors.teal : Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Categories",
+                        style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      )),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                    child: Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          if (select()) {
-                            _firestore.collection('categories').add({
-                              'Food': Tapped[0],
-                              'Clothes': Tapped[2],
-                              'Shelter': Tapped[1],
-                              'Women': Tapped[3],
-                              'Others': Tapped[4],
-                              'sender': loggedinUser.email,
-                              'initialized': true
-                            });
-
-                            Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: tab()));
-                          } else {
-                            var alertDialog = AlertUser(
-                              title: 'None Selected',
-                              content: 'You must select atleast one category',
-                              btnText: 'Back',
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    padding: const EdgeInsets.only(left: 20, bottom: 30),
+                    child: Text(
+                      "Select Categories you deal in",
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height - 105,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(75)),
+                ),
+                child: ListView(
+                  primary: false,
+                  padding: EdgeInsets.only(left: 25, right: 20),
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 45),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 300,
+                        child: ListView(
                           children: <Widget>[
-                            Text(
-                              "Let's go",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                                fontSize: 25,
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Tapped[0] = onTapped(0);
+                                });
+                              },
+                              child: Category(
+                                ic: Icon(
+                                  Tapped[0]
+                                      ? Icons.highlight_off
+                                      : Icons.add_circle,
+                                  color: Tapped[0] ? Colors.red : Colors.black,
+                                ),
+                                text: 'Food',
+                                img: 'images/food.jpg',
+                                color: Tapped[0] ? Colors.teal : Colors.black,
                               ),
-                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Tapped[1] = onTapped(1);
+                                });
+                              },
+                              child: Category(
+                                ic: Icon(
+                                  Tapped[1]
+                                      ? Icons.highlight_off
+                                      : Icons.add_circle,
+                                  color: Tapped[1] ? Colors.red : Colors.black,
+                                ),
+                                text: 'Shelter',
+                                img: 'images/food.jpg',
+                                color: Tapped[1] ? Colors.teal : Colors.black,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Tapped[2] = onTapped(2);
+                                });
+                              },
+                              child: Category(
+                                ic: Icon(
+                                  Tapped[2]
+                                      ? Icons.highlight_off
+                                      : Icons.add_circle,
+                                  color: Tapped[2] ? Colors.red : Colors.black,
+                                ),
+                                text: 'Clothes',
+                                img: 'images/food.jpg',
+                                color: Tapped[2] ? Colors.teal : Colors.black,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Tapped[3] = onTapped(3);
+                                });
+                              },
+                              child: Category(
+                                ic: Icon(
+                                  Tapped[3]
+                                      ? Icons.highlight_off
+                                      : Icons.add_circle,
+                                  color: Tapped[3] ? Colors.red : Colors.black,
+                                ),
+                                text: 'Women',
+                                img: 'images/food.jpg',
+                                color: Tapped[3] ? Colors.teal : Colors.black,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  Tapped[4] = onTapped(4);
+                                });
+                              },
+                              child: Category(
+                                ic: Icon(
+                                  Tapped[4]
+                                      ? Icons.highlight_off
+                                      : Icons.add_circle,
+                                  color: Tapped[4] ? Colors.red : Colors.black,
+                                ),
+                                text: 'Others',
+                                img: 'images/food.jpg',
+                                color: Tapped[4] ? Colors.teal : Colors.black,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: Colors.teal,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(25),
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25),
-                              bottomRight: Radius.circular(25))),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                      child: Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            if (select()) {
+                              _firestore.collection('categories').add({
+                                'Food': Tapped[0],
+                                'Clothes': Tapped[2],
+                                'Shelter': Tapped[1],
+                                'Women': Tapped[3],
+                                'Others': Tapped[4],
+                                'sender': loggedinUser.email,
+                                'initialized': true
+                              });
+
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: tab()));
+                            } else {
+                              var alertDialog = AlertUser(
+                                title: 'None Selected',
+                                content: 'You must select atleast one category',
+                                btnText: 'Back',
+                              );
+                              showDialog(
+                                  context: (context),
+                                  builder: (context) {
+                                    return alertDialog;
+                                  });
+                            }
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "Let's go",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                        height: 60,
+                        decoration: BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(25),
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25),
+                                bottomRight: Radius.circular(25))),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

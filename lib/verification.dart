@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:ngo/Roundedbutton.dart';
 import 'package:ngo/login.dart';
 import 'package:page_transition/page_transition.dart';
 import 'alertUser.dart';
@@ -30,7 +34,7 @@ class _VerificationState extends State<Verification> {
     setState(() {
       showSpinner = true;
     });
-    await loggedinUser.delete();
+    await _auth.signOut();
     setState(() {
       showSpinner = false;
     });
@@ -52,22 +56,88 @@ class _VerificationState extends State<Verification> {
       child: Scaffold(
         body: ModalProgressHUD(
           inAsyncCall: showSpinner,
-          child: Center(
-            child: Column(
+          child: SafeArea(
+            child: Stack(
               children: <Widget>[
-                Text(
-                  'A Password has been sent to your email',
-                  style: TextStyle(fontSize: 40),
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('images/register.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                FlatButton(
-                    child: Text('Login'),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.downToUp,
-                              child: LoginScreen()));
-                    })
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'A Link has been sent to your Email Account',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 35,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w100),
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        RoundedButton(
+                            onPressed: () async {
+                              await _auth.signOut();
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.downToUp,
+                                      child: LoginScreen()));
+                            },
+                            text: "Login"),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        RoundedButton(
+                          onPressed: () async {
+                            final result =
+                                await InternetAddress.lookup('google.com');
+                            try {
+                              final user = await _auth.currentUser();
+                              if (user != null &&
+                                  result.isNotEmpty &&
+                                  result[0].rawAddress.isNotEmpty) {
+                                user.sendEmailVerification();
+                                loggedinUser = user;
+                                var alertbox = AlertUser(
+                                  title: 'Success!',
+                                  content: 'Please check your email',
+                                  btnText: 'Back',
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertbox;
+                                    });
+                              } else {
+                                var alertbox = AlertUser(
+                                  title: 'Oops!',
+                                  content: "Task failed, Please try again",
+                                  btnText: 'Back',
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertbox;
+                                    });
+                              }
+                            } catch (e) {
+                              print(e);
+                            }
+                          },
+                          text: "Resend Email",
+                        ),
+                      ],
+                    )),
               ],
             ),
           ),
