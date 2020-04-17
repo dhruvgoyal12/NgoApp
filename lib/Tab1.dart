@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'detailed_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 final _auth = FirebaseAuth.instance;
 FirebaseUser loggedInUser;
+var cat = ['null', 'null', 'null', 'null', 'null'];
 
 class Tab1 extends StatefulWidget {
   static String id = "Tab1";
@@ -18,18 +20,8 @@ class _Tab1State extends State<Tab1> {
   @override
   void initState() {
     super.initState();
-    login();
     getCurrentUser();
-  }
-
-  void login() async {
-    try {
-      final User = await _auth.signInWithEmailAndPassword(
-          email: 'sonali@gmail.com', password: 'muskan');
-      if (User != null) {}
-    } catch (e) {
-      print(e);
-    }
+    getCat();
   }
 
   void getCurrentUser() async {
@@ -43,12 +35,35 @@ class _Tab1State extends State<Tab1> {
     }
   }
 
+  bool showSpinner = false;
+  getCat() async {
+    setState(() {
+      showSpinner = true;
+    });
+    QuerySnapshot us =
+        await Firestore.instance.collection('categories').getDocuments();
+    for (var doc in us.documents) {
+      if (doc.data['sender'] == loggedInUser.email) {
+        doc.data['Food'] ? cat[0] = 'Food' : cat[0] = 'null';
+        doc.data['Shelter'] ? cat[1] = 'Shelter' : cat[1] = 'null';
+        doc.data['Clothes'] ? cat[2] = 'Clothes' : cat[2] = 'null';
+        doc.data['Women'] ? cat[3] = 'Women' : cat[3] = 'null';
+        doc.data['Others'] ? cat[4] = 'Others' : cat[4] = 'null';
+        setState(() {
+          showSpinner = false;
+        });
+        break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: Colors.black54,
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: Colors.black54,
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -62,102 +77,111 @@ class _Tab1State extends State<Tab1> {
                       final img_url = message.data["img_url"];
                       final time = message.data["time"];
                       final city = message.data["city"];
-                      //final username= name from logged in user
-                      //final user phone no.= from logged in user
-                      final messageWidget = Padding(
-                        padding: EdgeInsets.only(bottom: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Material(
-                              borderRadius: BorderRadius.circular(0.0),
-                              elevation: 5.0,
-                              color: Colors.white,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 20.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
+                      final category = message.data["category"];
+                      for (int i = 0; i < 5; i++) {
+                        if (category == cat[i]) {
+                          final messageWidget = Padding(
+                            padding: EdgeInsets.only(bottom: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Material(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                  elevation: 5.0,
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 20.0),
+                                    child: Column(
                                       children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Image.network(
-                                                img_url,
-                                                height: 75.0,
-                                                width: 100.0,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 8.0),
-                                                  child: Text(
-                                                    'Location : $city',
-                                                    style: TextStyle(
-                                                        fontSize: 15.0,
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 1,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Image.network(
+                                                    img_url,
+                                                    height: 75.0,
+                                                    width: 100.0,
+                                                    fit: BoxFit.cover,
                                                   ),
-                                                ),
-                                                Text(
-                                                  time,
-                                                  style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 15.0,
-                                                      fontFamily: "Poppins"),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 8.0),
+                                                      child: Text(
+                                                        'Location : $city',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      time,
+                                                      style: TextStyle(
+                                                          color: Colors.black54,
+                                                          fontSize: 15.0,
+                                                          fontFamily:
+                                                              "Poppins"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 1,
+                                              child: RaisedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              detailed_view(
+                                                                  document:
+                                                                      message,
+                                                                  loggedInUser:
+                                                                      loggedInUser
+                                                                          .email)));
+                                                },
+                                                color: Colors.lightBlueAccent,
+                                                child: Text('View'),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: RaisedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          detailed_view(
-                                                              document: message,
-                                                              loggedInUser:
-                                                                  loggedInUser
-                                                                      .email)));
-                                            },
-                                            color: Colors.lightBlueAccent,
-                                            child: Text('View'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                      messageWidgets.add(messageWidget);
+                          );
+                          messageWidgets.add(messageWidget);
+                          break;
+                        }
+                      }
                     }
                     return Expanded(
                         child: ListView(

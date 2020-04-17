@@ -87,8 +87,12 @@ class tab extends StatelessWidget {
             backgroundColor: Colors.black87,
             bottom: TabBar(
               tabs: [
-                Tab(text: 'New', icon: Icon(Icons.add_alert)),
-                Tab(text: 'Pending', icon: Icon(Icons.access_time)),
+                Container(
+                    height: 53.0,
+                    child: Tab(text: 'New', icon: Icon(Icons.add_alert))),
+                Container(
+                    height: 53.0,
+                    child: Tab(text: 'Pending', icon: Icon(Icons.access_time))),
               ],
             ),
             title: Text('AAS'),

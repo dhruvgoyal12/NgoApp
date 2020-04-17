@@ -15,7 +15,8 @@ class detailed_view2 extends StatelessWidget {
         img_url = document.data['img_url'],
         location = document.data['city'],
         submitted_by = document.data['submitted_by'],
-        submitter_phone_no = document.data['submitter_phone_no'];
+        submitter_phone_no = document.data['submitter_phone_no'],
+        category = document.data['category'];
 
     return Scaffold(
       backgroundColor: Colors.white30,
@@ -166,6 +167,7 @@ class detailed_view2 extends StatelessWidget {
                           'time': time,
                           'submitted_by': submitted_by,
                           'submitter_phone_no': submitter_phone_no,
+                          'category': category,
                           //also add name and phone no. of submitter
                         });
                         document.reference.delete();
