@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:ngo/afterRegister.dart';
 import 'package:page_transition/page_transition.dart';
 import 'alertUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,11 +13,13 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
+
   Future<bool> _onWillPop() async {
     await _auth.signOut();
     Navigator.pop(context);
     return true;
   }
+
 
   final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -59,6 +59,7 @@ class _CategoriesState extends State<Categories> {
   bool showSpinner = false;
   String imgFood = 'images/food.jpg';
   String checked = 'images/smile.jpg';
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

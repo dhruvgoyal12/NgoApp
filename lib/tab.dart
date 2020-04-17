@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:ngo/forgot.dart';
 import 'package:ngo/login.dart';
 import 'Tab1.dart';
@@ -8,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'alertUser.dart';
 import 'categories2.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,8 +30,9 @@ class tab extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text('AAS - To help whoever Breaths',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('AAS - To help whatever Breaths',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
                   ],
                 ),
                 decoration: BoxDecoration(

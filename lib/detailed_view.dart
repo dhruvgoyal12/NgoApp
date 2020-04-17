@@ -151,7 +151,7 @@ class detailed_view extends StatelessWidget {
                           'submitted_by': submitted_by,
                           'submitter_phone_no': submitter_phone_no,
                           'accepted_by': loggedInUser,
-                          'category': category
+                          'category': category,
                         });
                         document.reference.delete();
                         Navigator.pop(context);
