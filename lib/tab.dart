@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ngo/categories2.dart';
 import 'Tab1.dart';
 import 'Tab2.dart';
+import 'package:page_transition/page_transition.dart';
 
 class tab extends StatelessWidget {
   @override
@@ -16,8 +18,9 @@ class tab extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text('AAS - To help whoever Breaths',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('AAS - To help whatever Breaths',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -36,7 +39,11 @@ class tab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: Categories2()));
                 },
               ),
               ListTile(
