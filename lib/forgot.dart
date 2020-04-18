@@ -32,6 +32,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -45,155 +46,158 @@ class _ForgotScreenState extends State<ForgotScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 35,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w100),
-                    ),
-                    Text(
-                      "Let us help you",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: kInputFieldDecoration.copyWith(
-                        hintText: 'Email Address',
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Icon(
-                            Icons.email,
+              ListView(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 150),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 35,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w100),
+                        ),
+                        Text(
+                          "Let us help you",
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
                             color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          decoration: kInputFieldDecoration.copyWith(
+                            hintText: 'Email Address',
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Icon(
+                                Icons.email,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    RoundedButton(
-                      onPressed: () async {
-                        RegExp reg = RegExp(pattern);
-                        if (email != null && reg.hasMatch(email)) {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            final exist = await _auth
-                                .fetchSignInMethodsForEmail(email: email)
-                                .toString();
-                            if (exist != null) {
-                              await _auth.sendPasswordResetEmail(email: email);
-                              var alertDialog = AlertUser(
-                                title: 'Success!',
-                                content: 'Please check your email',
-                                btnText: 'Back',
-                              );
-                              showDialog(
-                                  context: (context),
-                                  builder: (context) {
-                                    return alertDialog;
-                                  });
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        RoundedButton(
+                          onPressed: () async {
+                            RegExp reg = RegExp(pattern);
+                            if (email != null && reg.hasMatch(email)) {
                               setState(() {
-                                showSpinner = false;
+                                showSpinner = true;
                               });
+                              try {
+                                final exist = await _auth
+                                    .fetchSignInMethodsForEmail(email: email)
+                                    .toString();
+                                if (exist != null) {
+                                  await _auth.sendPasswordResetEmail(
+                                      email: email);
+                                  var alertDialog = AlertUser(
+                                    title: 'Success!',
+                                    content: 'Please check your email',
+                                    btnText: 'Back',
+                                  );
+                                  showDialog(
+                                      context: (context),
+                                      builder: (context) {
+                                        return alertDialog;
+                                      });
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                }
+                              } on PlatformException {
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                                var alertDialog = AlertDialog(
+                                  titleTextStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w500),
+                                  title: Text('Oops!'),
+                                  content: Text(
+                                    'Incorrect Credentials, or no internet Connection',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Register'),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: RegisterScreen(
+                                                  user: Auth(),
+                                                )));
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('Back'),
+                                      onPressed: () {
+                                        Navigator.pop(
+                                          context,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(),
+                                  backgroundColor: Colors.transparent,
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertDialog;
+                                    });
+                              }
+                            } else {
+                              if (email == null ||
+                                  !email.contains("@") ||
+                                  !email.contains(".") ||
+                                  !reg.hasMatch(email)) {
+                                var alertDialog = AlertUser(
+                                  title: 'Oops!',
+                                  content: 'Enter your email',
+                                  btnText: 'Back',
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertDialog;
+                                    });
+                              }
                             }
-                          } on PlatformException {
-                            setState(() {
-                              showSpinner = false;
-                            });
-                            var alertDialog = AlertDialog(
-                              titleTextStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500),
-                              title: Text('Oops!'),
-                              content: Text(
-                                'Incorrect Credentials, or no internet Connection',
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Register'),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type:
-                                                PageTransitionType.rightToLeft,
-                                            child: RegisterScreen(
-                                              user: Auth(),
-                                            )));
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Back'),
-                                  onPressed: () {
-                                    Navigator.pop(
-                                      context,
-                                    );
-                                  },
-                                ),
-                              ],
-                              shape: RoundedRectangleBorder(),
-                              backgroundColor: Colors.transparent,
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          }
-                        } else {
-                          if (email == null ||
-                              !email.contains("@") ||
-                              !email.contains(".") ||
-                              !reg.hasMatch(email)) {
-                            var alertDialog = AlertUser(
-                              title: 'Oops!',
-                              content: 'Enter your email',
-                              btnText: 'Back',
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          }
-                        }
-                      },
-                      text: 'Submit',
+                          },
+                          text: 'Submit',
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             ],
           ),

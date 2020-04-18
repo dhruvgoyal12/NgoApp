@@ -13,13 +13,11 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-
   Future<bool> _onWillPop() async {
     await _auth.signOut();
     Navigator.pop(context);
     return true;
   }
-
 
   final _firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -261,7 +259,9 @@ class _CategoriesState extends State<Categories> {
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.rightToLeft,
-                                      child: tab()));
+                                      child: tab(
+                                        loggedinUser: loggedinUser,
+                                      )));
                             } else {
                               var alertDialog = AlertUser(
                                 title: 'None Selected',

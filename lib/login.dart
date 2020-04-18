@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -51,144 +54,159 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Welcome",
-                      style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 50,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w100),
-                    ),
-                    Text(
-                      "Sign-in to continue",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                      decoration: kInputFieldDecoration.copyWith(
-                        hintText: 'Email Address',
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Icon(
-                            Icons.email,
-                            color: Colors.white,
+              ListView(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 150),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Hero(
+                          tag: 'welcome',
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Text(
+                              "Welcome",
+                              style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 50,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w100),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    TextField(
-                        obscureText: true,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                          password = value;
-                        },
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                        Text(
+                          "Sign-in to continue",
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500),
                         ),
-                        decoration: kInputFieldDecoration.copyWith(
-                            hintText: "Password",
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.emailAddress,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          onChanged: (value) {
+                            email = value;
+                          },
+                          decoration: kInputFieldDecoration.copyWith(
+                            hintText: 'Email Address',
                             prefixIcon: Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Icon(
-                                Icons.lock,
+                                Icons.email,
                                 color: Colors.white,
                               ),
-                            ))),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    RoundedButton(
-                      onPressed: () async {
-                        RegExp reg = RegExp(pattern);
-                        if (email != null &&
-                            password != null &&
-                            reg.hasMatch(email)) {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          try {
-                            final user = await _auth.signInWithEmailAndPassword(
-                                email: email, password: password);
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        TextField(
+                            obscureText: true,
+                            textAlign: TextAlign.center,
+                            onChanged: (value) {
+                              password = value;
+                            },
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: kInputFieldDecoration.copyWith(
+                                hintText: "Password",
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Icon(
+                                    Icons.lock,
+                                    color: Colors.white,
+                                  ),
+                                ))),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        RoundedButton(
+                          onPressed: () async {
+                            RegExp reg = RegExp(pattern);
+                            if (email != null &&
+                                password != null &&
+                                reg.hasMatch(email)) {
+                              setState(() {
+                                showSpinner = true;
+                              });
+                              try {
+                                final user =
+                                    await _auth.signInWithEmailAndPassword(
+                                        email: email, password: password);
 //                            final user = widget.auth.signIn(email, password);
 
-                            if (user != null) {
-                              try {
-                                final loggedinUser = await _auth.currentUser();
+                                if (user != null) {
+                                  try {
+                                    final loggedinUser =
+                                        await _auth.currentUser();
 
-                                if (loggedinUser != null) {
-                                  if (loggedinUser.isEmailVerified) {
-                                    // widget.onSignedin();
+                                    if (loggedinUser != null) {
+                                      if (loggedinUser.isEmailVerified) {
+                                        // widget.onSignedin();
 
-                                    try {
-                                      final QuerySnapshot result =
-                                          await _firestore
-                                              .collection('categories')
-                                              .where('sender',
-                                                  isEqualTo: loggedinUser.email
-                                                      .toLowerCase())
-                                              .limit(1)
-                                              .getDocuments();
-                                      final List<DocumentSnapshot> documents =
-                                          result.documents;
-                                      bool found = documents.length == 1;
+                                        try {
+                                          final QuerySnapshot result =
+                                              await _firestore
+                                                  .collection('categories')
+                                                  .where('sender',
+                                                      isEqualTo: loggedinUser
+                                                          .email
+                                                          .toLowerCase())
+                                                  .limit(1)
+                                                  .getDocuments();
+                                          final List<DocumentSnapshot>
+                                              documents = result.documents;
+                                          bool found = documents.length == 1;
 
-                                      if (found) {
-                                        Navigator.push(
-                                            context,
-                                            PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: tab()));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: Categories()));
-                                      }
-                                    } catch (e) {
-                                      var alertDialog = AlertUser(
-                                        title: 'Oops!',
-                                        content:
-                                            'We cannot reach our servers right now. Please check your internet connection',
-                                        btnText: 'Back',
-                                      );
-                                      showDialog(
-                                          context: (context),
-                                          builder: (context) {
-                                            return alertDialog;
+                                          if (found) {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: tab(
+                                                      loggedinUser:
+                                                          loggedinUser,
+                                                    )));
+                                          } else {
+                                            Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: Categories()));
+                                          }
+                                        } catch (e) {
+                                          var alertDialog = AlertUser(
+                                            title: 'Oops!',
+                                            content:
+                                                'We cannot reach our servers right now. Please check your internet connection',
+                                            btnText: 'Back',
+                                          );
+                                          showDialog(
+                                              context: (context),
+                                              builder: (context) {
+                                                return alertDialog;
+                                              });
+
+                                          setState(() {
+                                            showSpinner = false;
                                           });
-
-                                      setState(() {
-                                        showSpinner = false;
-                                      });
-                                    }
+                                        }
 //
 //                                    _firestore
 //                                        .collection('categories')
@@ -227,167 +245,170 @@ class _LoginScreenState extends State<LoginScreen> {
 //                                        showSpinner = false;
 //                                      });
 //                                    });
-                                  } else {
-                                    var alertDialog = AlertUser(
-                                      title: 'Oops!',
-                                      content:
-                                          'Email is not verified, Please verify your email and try again.',
-                                      btnText: 'Back',
-                                    );
-                                    showDialog(
-                                        context: (context),
-                                        builder: (context) {
-                                          return alertDialog;
-                                        });
-                                  }
+                                      } else {
+                                        var alertDialog = AlertUser(
+                                          title: 'Oops!',
+                                          content:
+                                              'Email is not verified, Please verify your email and try again.',
+                                          btnText: 'Back',
+                                        );
+                                        showDialog(
+                                            context: (context),
+                                            builder: (context) {
+                                              return alertDialog;
+                                            });
+                                      }
 
-                                  setState(() {
-                                    showSpinner = false;
-                                  });
+                                      setState(() {
+                                        showSpinner = false;
+                                      });
+                                    }
+                                  } catch (e) {
+                                    setState(() {
+                                      showSpinner = false;
+                                    });
+                                    print(e);
+                                  }
                                 }
+                              } on PlatformException {
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                                var alertDialog = AlertDialog(
+                                  titleTextStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w500),
+                                  title: Text('Oops!'),
+                                  content: Text(
+                                    'Incorrect Credentials, or no internet Connection',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w800),
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Register'),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: RegisterScreen(
+                                                  user: Auth(),
+                                                )));
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('Back'),
+                                      onPressed: () {
+                                        Navigator.pop(
+                                          context,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(),
+                                  backgroundColor: Colors.transparent,
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertDialog;
+                                    });
                               } catch (e) {
                                 setState(() {
                                   showSpinner = false;
                                 });
                                 print(e);
+                                print('haha');
+                              }
+                            } else {
+                              if (email == null ||
+                                  !email.contains("@") ||
+                                  !email.contains(".") ||
+                                  !reg.hasMatch(email)) {
+                                var alertDialog = AlertUser(
+                                  title: 'Oops!',
+                                  content: 'Enter your email',
+                                  btnText: 'Back',
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertDialog;
+                                    });
+                              } else {
+                                var alertDialog = AlertUser(
+                                  title: 'Oops!',
+                                  content: 'Enter your password',
+                                  btnText: 'Back',
+                                );
+                                showDialog(
+                                    context: (context),
+                                    builder: (context) {
+                                      return alertDialog;
+                                    });
                               }
                             }
-                          } on PlatformException {
-                            setState(() {
-                              showSpinner = false;
-                            });
-                            var alertDialog = AlertDialog(
-                              titleTextStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500),
-                              title: Text('Oops!'),
-                              content: Text(
-                                'Incorrect Credentials, or no internet Connection',
+                          },
+                          text: 'Login',
+                        ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            InkWell(
+                              child: Text(
+                                'Forgot?',
                                 style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800),
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    letterSpacing: 0.5),
                               ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Register'),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type:
-                                                PageTransitionType.rightToLeft,
-                                            child: RegisterScreen(
-                                              user: Auth(),
-                                            )));
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Back'),
-                                  onPressed: () {
-                                    Navigator.pop(
-                                      context,
-                                    );
-                                  },
-                                ),
-                              ],
-                              shape: RoundedRectangleBorder(),
-                              backgroundColor: Colors.transparent,
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          } catch (e) {
-                            setState(() {
-                              showSpinner = false;
-                            });
-                            print(e);
-                            print('haha');
-                          }
-                        } else {
-                          if (email == null ||
-                              !email.contains("@") ||
-                              !email.contains(".") ||
-                              !reg.hasMatch(email)) {
-                            var alertDialog = AlertUser(
-                              title: 'Oops!',
-                              content: 'Enter your email',
-                              btnText: 'Back',
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          } else {
-                            var alertDialog = AlertUser(
-                              title: 'Oops!',
-                              content: 'Enter your password',
-                              btnText: 'Back',
-                            );
-                            showDialog(
-                                context: (context),
-                                builder: (context) {
-                                  return alertDialog;
-                                });
-                          }
-                        }
-                      },
-                      text: 'Login',
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        InkWell(
-                          child: Text(
-                            'Forgot?',
-                            style: TextStyle(
-                                fontSize: 16,
+                              onTap: () {
+                                return Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.downToUp,
+                                        child: ForgotScreen()));
+                              },
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Container(
                                 color: Colors.white,
-                                letterSpacing: 0.5),
-                          ),
-                          onTap: () {
-                            return Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.downToUp,
-                                    child: ForgotScreen()));
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Container(
-                            color: Colors.white,
-                            height: 20,
-                            width: 2,
-                          ),
-                        ),
-                        InkWell(
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                                letterSpacing: 0.5),
-                          ),
-                          onTap: () {
-                            return Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.downToUp,
-                                    child: RegisterScreen()));
-                          },
+                                height: 20,
+                                width: 2,
+                              ),
+                            ),
+                            InkWell(
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    letterSpacing: 0.5),
+                              ),
+                              onTap: () {
+                                return Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.downToUp,
+                                        child: RegisterScreen()));
+                              },
+                            )
+                          ],
                         )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               )
             ],
           ),

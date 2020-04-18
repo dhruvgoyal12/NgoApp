@@ -14,6 +14,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class tab extends StatelessWidget {
+  tab({this.loggedinUser});
+  final loggedinUser;
   final _auth = FirebaseAuth.instance;
   final _firestore = Firestore.instance;
 
@@ -27,13 +29,33 @@ class tab extends StatelessWidget {
               child: ListView(
             children: <Widget>[
               DrawerHeader(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text('AAS - To help whatever Breaths',
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('AAS',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 35,
+                              letterSpacing: 0.2,
+                              fontWeight: FontWeight.w100,
+                              fontFamily: 'Montserrat',
+                              color: Colors.white)),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        loggedinUser.email,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white)),
-                  ],
+                            fontSize: 16,
+                            letterSpacing: 0.6,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
                 ),
                 decoration: BoxDecoration(
                     image: DecorationImage(
@@ -46,7 +68,13 @@ class tab extends StatelessWidget {
                     Icon(Icons.add_circle),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: Text('Change Category'),
+                      child: Text(
+                        'Change Categories',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
@@ -64,7 +92,13 @@ class tab extends StatelessWidget {
                     Icon(Icons.autorenew),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: Text('Change Password'),
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
@@ -108,7 +142,13 @@ class tab extends StatelessWidget {
                     Icon(Icons.exit_to_app),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: Text('Logout'),
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
@@ -127,23 +167,51 @@ class tab extends StatelessWidget {
                     Icon(Icons.delete),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: Text('Delete Account'),
+                      child: Text(
+                        'Delete Account',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
                 onTap: () async {
                   try {
-                    final loggedinUser = await _auth.currentUser();
+                    QuerySnapshot req = await _firestore
+                        .collection('requests_accepted')
+                        .getDocuments();
+                    for (var us in req.documents) {
+                      if (loggedinUser.email == us.data['accepted_by']) {
+                        _firestore.collection('requests').add({
+                          'img_url': us.data['img_url'],
+                          'city': us.data['city'],
+                          'address': us.data['address'],
+                          'note': us.data['note'],
+                          'time': us.data['time'],
+                          'submitted_by': us.data['submitted_by'],
+                          'submitter_phone_no': us.data['submitter_phone_no'],
+                          'category': us.data['category'],
+                        });
+                        us.reference.delete();
+                      }
+                    }
+                    print('Hello');
+                    print(loggedinUser.email);
                     final QuerySnapshot result = await _firestore
                         .collection('categories')
                         .where('sender',
-                            isEqualTo: loggedinUser.email.toLowerCase())
+                            isEqualTo:
+                                loggedinUser.email.toString().toLowerCase())
                         .limit(1)
                         .getDocuments();
-
+                    final List<DocumentSnapshot> documents = result.documents;
+                    print(documents);
                     String id;
-                    for (var r in result.documents) {
+                    for (var r in documents) {
                       id = r.documentID;
+                      print('haha');
                     }
 
                     await _firestore
@@ -179,16 +247,32 @@ class tab extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.black87,
             bottom: TabBar(
+              labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              indicatorWeight: 5,
               tabs: [
                 Container(
-                    height: 53.0,
-                    child: Tab(text: 'New', icon: Icon(Icons.add_alert))),
+                    padding: EdgeInsets.only(top: 5),
+                    height: 75.0,
+                    child: Tab(
+                      text: 'NEW',
+                      icon: Icon(Icons.add_alert),
+                    )),
                 Container(
-                    height: 53.0,
-                    child: Tab(text: 'Pending', icon: Icon(Icons.access_time))),
+                    padding: EdgeInsets.only(top: 5),
+                    height: 75.0,
+                    child: Tab(text: 'PENDING', icon: Icon(Icons.access_time))),
               ],
             ),
-            title: Text('AAS'),
+            title: Text(
+              'AAS',
+              style: TextStyle(
+                fontSize: 25,
+                letterSpacing: 0.2,
+                fontWeight: FontWeight.w100,
+                fontFamily: 'Montserrat',
+                color: Colors.white,
+              ),
+            ),
           ),
           body: Container(
             child: TabBarView(

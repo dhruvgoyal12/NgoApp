@@ -3,6 +3,7 @@ import 'package:ngo/main.dart';
 import 'package:ngo/rounded_button.dart';
 import 'authentication.dart';
 import 'root.dart';
+import 'package:page_transition/page_transition.dart';
 
 class welcome_screen extends StatelessWidget {
   static String id = "welcome_screen";
@@ -54,13 +55,19 @@ class welcome_screen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 15.0, right: 15.0, bottom: 10.0),
-                        child: Text(
-                          'WELCOME',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                            color: Colors.white,
-                            fontSize: 45.0,
+                        child: Hero(
+                          tag: 'welcome',
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Text(
+                              'Welcome',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
+                                color: Colors.white,
+                                fontSize: 45.0,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -68,10 +75,7 @@ class welcome_screen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 30.0),
                         child: RoundedButton(
-                            text: 'Report a needy',
-                            onPressed: () {
-                     
-                            }),
+                            text: 'Report a needy', onPressed: () {}),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -79,13 +83,13 @@ class welcome_screen extends StatelessWidget {
                         child: RoundedButton(
                             text: 'Help a needy',
                             onPressed: () {
-Navigator.push(
+                              Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RootPage(
-              auth: Auth(),
-            )));
-                           
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: RootPage(
+                                        auth: Auth(),
+                                      )));
                             }),
                       ),
                     ],
