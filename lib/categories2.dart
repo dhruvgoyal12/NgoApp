@@ -91,7 +91,7 @@ class _Categories2State extends State<Categories2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange,
+      backgroundColor: Colors.teal,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: ListView(
