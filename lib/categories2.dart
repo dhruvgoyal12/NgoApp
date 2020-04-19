@@ -36,6 +36,8 @@ class _Categories2State extends State<Categories2> {
     delCat();
   }
 
+  var Tapped = [false, false, false, false, false, false];
+  String id;
   delCat() async {
     setState(() {
       showSpinner = true;
@@ -44,17 +46,32 @@ class _Categories2State extends State<Categories2> {
         await Firestore.instance.collection('categories').getDocuments();
     for (var doc in us.documents) {
       if (doc.data['sender'] == loggedinUser.email) {
-        doc.reference.delete();
+        id = doc.documentID;
+        if (doc.data['Food'] == true) {
+          Tapped[0] = onTapped(0);
+        }
+        if (doc.data['Shelter'] == true) {
+          Tapped[1] = onTapped(1);
+        }
+        if (doc.data['Clothes'] == true) {
+          Tapped[2] = onTapped(2);
+        }
+        if (doc.data['Women'] == true) {
+          Tapped[3] = onTapped(3);
+        }
+        if (doc.data['Others'] == true) {
+          Tapped[4] = onTapped(4);
+        }
         setState(() {
           showSpinner = false;
         });
         break;
-      }
+      } else
+        showSpinner = false;
     }
   }
 
   bool showSpinner = false;
-  var Tapped = [false, false, false, false, false, false];
 
   bool onTapped(var a) {
     return !Tapped[a];
@@ -73,7 +90,7 @@ class _Categories2State extends State<Categories2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.orange,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: ListView(
@@ -254,7 +271,10 @@ class _Categories2State extends State<Categories2> {
                             showSpinner = true;
                           });
                           if (select()) {
-                            _firestore.collection('categories').add({
+                            _firestore
+                                .collection('categories')
+                                .document(id)
+                                .updateData({
                               'Food': Tapped[0],
                               'Clothes': Tapped[2],
                               'Shelter': Tapped[1],
@@ -268,7 +288,9 @@ class _Categories2State extends State<Categories2> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: tab()));
+                                    child: tab(
+                                      loggedinUser: loggedinUser,
+                                    )));
                           } else {
                             var alertDialog = AlertUser(
                               title: 'None Selected',
@@ -303,7 +325,7 @@ class _Categories2State extends State<Categories2> {
                       ),
                       height: 60,
                       decoration: BoxDecoration(
-                          color: Colors.teal,
+                          color: Colors.lightBlueAccent,
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(25),
                               topLeft: Radius.circular(25),

@@ -60,7 +60,7 @@ class _Tab1State extends State<Tab1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.black12,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -166,7 +166,11 @@ class _Tab1State extends State<Tab1> {
                                                                           .email)));
                                                 },
                                                 color: Colors.lightBlueAccent,
-                                                child: Text('View'),
+                                                child: Text(
+                                                  'View',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           ],

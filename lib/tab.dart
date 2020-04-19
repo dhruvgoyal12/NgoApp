@@ -38,7 +38,7 @@ class tab extends StatelessWidget {
                       Text('AAS',
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                              fontSize: 35,
+                              fontSize: 30,
                               letterSpacing: 0.2,
                               fontWeight: FontWeight.w100,
                               fontFamily: 'Montserrat',
@@ -252,14 +252,14 @@ class tab extends StatelessWidget {
               tabs: [
                 Container(
                     padding: EdgeInsets.only(top: 5),
-                    height: 75.0,
+                    height: 60.0,
                     child: Tab(
                       text: 'NEW',
                       icon: Icon(Icons.add_alert),
                     )),
                 Container(
                     padding: EdgeInsets.only(top: 5),
-                    height: 75.0,
+                    height: 60.0,
                     child: Tab(text: 'PENDING', icon: Icon(Icons.access_time))),
               ],
             ),

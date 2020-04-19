@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ngo/Roundedbutton.dart';
+import 'package:ngo/rounded_button.dart';
 
 class detailed_view2 extends StatelessWidget {
   final _firestore = Firestore.instance;
@@ -38,99 +40,128 @@ class detailed_view2 extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text('$note.',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white70,
-                          fontSize: 17.0,
-                        )),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 5.0),
+                    child: Material(
+                      borderRadius: BorderRadius.circular(5.0),
+                      elevation: 10.0,
+                      color: Colors.white30.withOpacity(0.1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('$note.\n',
+                                style: TextStyle(
+                                  //fontWeight: FontWeight.bold,
+                                  color: Colors.white70,
+                                  fontSize: 17.0,
+                                )),
+                            Text(time,
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 )
               ],
             ),
+//            Container(
+//                height: 1.0,
+//                decoration: BoxDecoration(
+//                  border: Border.all(
+//                    color: Colors.grey,
+//                    width: 1.4,
+//                  ),
+//                )),
             Padding(
               padding:
-                  const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Text(time,
-                        style: TextStyle(
-                          color: Colors.white70,
-                        )),
-                  )
-                ],
-              ),
-            ),
-            Container(
-                height: 1.0,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.4,
-                  ),
-                )),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Address: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                        fontSize: 17.0,
-                      )),
-                  Expanded(
-                    child: Text(address,
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 17.0,
-                        )),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Submitted by: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                        fontSize: 17.0,
-                      )),
-                  Expanded(
-                    child: Text(submitted_by,
-                        //name here
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 17.0,
-                        )),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: <Widget>[
-                  Text("Phone NO. ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                        fontSize: 17.0,
-                      )),
-                  Expanded(
-                      child: Text(submitter_phone_no, //phone no. here
+                  const EdgeInsets.only(bottom: 8.0, left: 5.0, right: 5.0),
+              child: Material(
+                borderRadius: BorderRadius.circular(5.0),
+                elevation: 10.0,
+                color: Colors.white30.withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Address: ",
                           style: TextStyle(
+                            fontWeight: FontWeight.bold,
                             color: Colors.white70,
                             fontSize: 17.0,
-                          )))
-                ],
+                          )),
+                      Expanded(
+                        child: Text(address,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 17.0,
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 8.0, left: 5.0, right: 5.0),
+              child: Material(
+                borderRadius: BorderRadius.circular(5.0),
+                elevation: 10.0,
+                color: Colors.white30.withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text("Submitted by: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white70,
+                            fontSize: 17.0,
+                          )),
+                      Expanded(
+                        child: Text(submitted_by,
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 17.0,
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 8.0, left: 5.0, right: 5.0),
+              child: Material(
+                borderRadius: BorderRadius.circular(5.0),
+                elevation: 10.0,
+                color: Colors.white30.withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text("Phone NO. ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white70,
+                            fontSize: 17.0,
+                          )),
+                      Expanded(
+                          child: Text(submitter_phone_no,
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 17.0,
+                              )))
+                    ],
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -138,16 +169,16 @@ class detailed_view2 extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
-                      onPressed: () {
-                        document.reference.delete();
-                        Navigator.pop(context);
-                      },
-                      child: Text("completed"),
-                      color: Colors.green,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                    ),
+                    child: rounded_button(
+                        onPressed: () {
+                          document.reference.delete();
+                          Navigator.pop(context);
+                        },
+                        text: ("completed"),
+                        color: Colors.lightGreen
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(20.0)),
+                        ),
                   ),
                 ],
               ),
@@ -157,27 +188,27 @@ class detailed_view2 extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
-                      onPressed: () {
-                        _firestore.collection('requests').add({
-                          'img_url': img_url,
-                          'city': location,
-                          'address': address,
-                          'note': note,
-                          'time': time,
-                          'submitted_by': submitted_by,
-                          'submitter_phone_no': submitter_phone_no,
-                          'category': category,
-                          //also add name and phone no. of submitter
-                        });
-                        document.reference.delete();
-                        Navigator.pop(context);
-                      },
-                      child: Text("cancel"),
-                      color: Colors.redAccent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                    ),
+                    child: rounded_button(
+                        onPressed: () {
+                          _firestore.collection('requests').add({
+                            'img_url': img_url,
+                            'city': location,
+                            'address': address,
+                            'note': note,
+                            'time': time,
+                            'submitted_by': submitted_by,
+                            'submitter_phone_no': submitter_phone_no,
+                            'category': category,
+                            //also add name and phone no. of submitter
+                          });
+                          document.reference.delete();
+                          Navigator.pop(context);
+                        },
+                        text: ("cancel"),
+                        color: Colors.redAccent
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(20.0)),
+                        ),
                   ),
                 ],
               ),
