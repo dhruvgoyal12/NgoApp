@@ -205,7 +205,7 @@ class _CategoriesState extends State<Categories> {
                                       : Icons.add_circle,
                                   color: Tapped[3] ? Colors.red : Colors.black,
                                 ),
-                                text: 'Women',
+                                text: 'Women Care',
                                 img: 'images/food.jpg',
                                 color: Tapped[3] ? Colors.teal : Colors.black,
                               ),
@@ -249,7 +249,7 @@ class _CategoriesState extends State<Categories> {
                                 'Food': Tapped[0],
                                 'Clothes': Tapped[2],
                                 'Shelter': Tapped[1],
-                                'Women': Tapped[3],
+                                'Women Care': Tapped[3],
                                 'Others': Tapped[4],
                                 'sender': loggedinUser.email,
                                 'initialized': true

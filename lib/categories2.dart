@@ -56,7 +56,7 @@ class _Categories2State extends State<Categories2> {
         if (doc.data['Clothes'] == true) {
           Tapped[2] = onTapped(2);
         }
-        if (doc.data['Women'] == true) {
+        if (doc.data['Women Care'] == true) {
           Tapped[3] = onTapped(3);
         }
         if (doc.data['Others'] == true) {
@@ -231,7 +231,7 @@ class _Categories2State extends State<Categories2> {
                                     : Icons.add_circle,
                                 color: Tapped[3] ? Colors.red : Colors.black,
                               ),
-                              text: 'Women',
+                              text: 'Women Care',
                               img: 'images/food.jpg',
                               color: Tapped[3] ? Colors.teal : Colors.black,
                             ),
@@ -278,7 +278,7 @@ class _Categories2State extends State<Categories2> {
                               'Food': Tapped[0],
                               'Clothes': Tapped[2],
                               'Shelter': Tapped[1],
-                              'Women': Tapped[3],
+                              'Women Care': Tapped[3],
                               'Others': Tapped[4],
                               'sender': loggedinUser.email,
                               'initialized': true
