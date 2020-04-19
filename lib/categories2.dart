@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:ngo/Roundedbutton.dart';
 import 'package:page_transition/page_transition.dart';
 import 'alertUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -264,14 +265,14 @@ class _Categories2State extends State<Categories2> {
                   Padding(
                     padding:
                         const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                    child: Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          if (select()) {
-                            _firestore
+                    child: RoundedButton(
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        if (select()) {
+                          try {
+                            await _firestore
                                 .collection('categories')
                                 .document(id)
                                 .updateData({
@@ -291,10 +292,10 @@ class _Categories2State extends State<Categories2> {
                                     child: tab(
                                       loggedinUser: loggedinUser,
                                     )));
-                          } else {
+                          } catch (e) {
                             var alertDialog = AlertUser(
-                              title: 'None Selected',
-                              content: 'You must select atleast one category',
+                              title: 'Sorry',
+                              content: 'An Error occured. Try again',
                               btnText: 'Back',
                             );
                             showDialog(
@@ -302,35 +303,27 @@ class _Categories2State extends State<Categories2> {
                                 builder: (context) {
                                   return alertDialog;
                                 });
+                            setState(() {
+                              showSpinner = false;
+                            });
                           }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Let's go",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                                fontSize: 25,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                      height: 60,
-                      decoration: BoxDecoration(
-                          color: Colors.lightBlueAccent,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(25),
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25),
-                              bottomRight: Radius.circular(25))),
+                        } else {
+                          var alertDialog = AlertUser(
+                            title: 'None Selected',
+                            content: 'You must select atleast one category',
+                            btnText: 'Back',
+                          );
+                          showDialog(
+                              context: (context),
+                              builder: (context) {
+                                return alertDialog;
+                              });
+                        }
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      },
+                      text: "Let's go",
                     ),
                   ),
                 ],

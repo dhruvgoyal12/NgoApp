@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:ngo/Roundedbutton.dart';
 import 'package:page_transition/page_transition.dart';
 import 'alertUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -238,14 +239,15 @@ class _CategoriesState extends State<Categories> {
                     Padding(
                       padding:
                           const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                      child: Container(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            if (select()) {
-                              _firestore.collection('categories').add({
+                      child: RoundedButton(
+                        onPressed: () async {
+                          setState(() {
+                            showSpinner = true;
+                          });
+
+                          if (select()) {
+                            try {
+                              await _firestore.collection('categories').add({
                                 'Food': Tapped[0],
                                 'Clothes': Tapped[2],
                                 'Shelter': Tapped[1],
@@ -262,10 +264,13 @@ class _CategoriesState extends State<Categories> {
                                       child: tab(
                                         loggedinUser: loggedinUser,
                                       )));
-                            } else {
+                              setState(() {
+                                showSpinner = false;
+                              });
+                            } catch (e) {
                               var alertDialog = AlertUser(
-                                title: 'None Selected',
-                                content: 'You must select atleast one category',
+                                title: 'Sorry',
+                                content: 'An Error occured. Try again',
                                 btnText: 'Back',
                               );
                               showDialog(
@@ -273,35 +278,27 @@ class _CategoriesState extends State<Categories> {
                                   builder: (context) {
                                     return alertDialog;
                                   });
+                              setState(() {
+                                showSpinner = false;
+                              });
                             }
-                            setState(() {
-                              showSpinner = false;
-                            });
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Let's go",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                        height: 60,
-                        decoration: BoxDecoration(
-                            color: Colors.teal,
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(25),
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(25),
-                                bottomRight: Radius.circular(25))),
+                          } else {
+                            var alertDialog = AlertUser(
+                              title: 'None Selected',
+                              content: 'You must select atleast one category',
+                              btnText: 'Back',
+                            );
+                            showDialog(
+                                context: (context),
+                                builder: (context) {
+                                  return alertDialog;
+                                });
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        },
+                        text: "Let's go",
                       ),
                     ),
                   ],
@@ -362,3 +359,69 @@ class Category extends StatelessWidget {
     );
   }
 }
+
+//Container(
+//child: GestureDetector(
+//onTap: () {
+//setState(() {
+//showSpinner = true;
+//});
+//if (select()) {
+//_firestore.collection('categories').add({
+//'Food': Tapped[0],
+//'Clothes': Tapped[2],
+//'Shelter': Tapped[1],
+//'Women Care': Tapped[3],
+//'Others': Tapped[4],
+//'sender': loggedinUser.email,
+//'initialized': true
+//});
+//
+//Navigator.pushReplacement(
+//context,
+//PageTransition(
+//type: PageTransitionType.rightToLeft,
+//child: tab(
+//loggedinUser: loggedinUser,
+//)));
+//} else {
+//var alertDialog = AlertUser(
+//title: 'None Selected',
+//content: 'You must select atleast one category',
+//btnText: 'Back',
+//);
+//showDialog(
+//context: (context),
+//builder: (context) {
+//return alertDialog;
+//});
+//}
+//setState(() {
+//showSpinner = false;
+//});
+//},
+//child: Column(
+//crossAxisAlignment: CrossAxisAlignment.center,
+//mainAxisAlignment: MainAxisAlignment.center,
+//children: <Widget>[
+//Text(
+//"Let's go",
+//style: TextStyle(
+//fontWeight: FontWeight.w500,
+//color: Colors.white,
+//fontSize: 25,
+//),
+//textAlign: TextAlign.center,
+//),
+//],
+//),
+//),
+//height: 60,
+//decoration: BoxDecoration(
+//color: Colors.teal,
+//borderRadius: BorderRadius.only(
+//bottomLeft: Radius.circular(25),
+//topLeft: Radius.circular(25),
+//topRight: Radius.circular(25),
+//bottomRight: Radius.circular(25))),
+//)
