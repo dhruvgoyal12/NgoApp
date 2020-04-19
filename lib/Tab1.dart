@@ -40,25 +40,28 @@ class _Tab1State extends State<Tab1> {
     setState(() {
       showSpinner = true;
     });
-    QuerySnapshot us =
-        await Firestore.instance.collection('categories').getDocuments();
-    for (var doc in us.documents) {
-      if (doc.data['sender'] == loggedInUser.email) {
-        doc.data['Food'] ? cat[0] = 'Food' : cat[0] = 'null';
-        doc.data['Shelter'] ? cat[1] = 'Shelter' : cat[1] = 'null';
-        doc.data['Clothes'] ? cat[2] = 'Clothes' : cat[2] = 'null';
-        doc.data['Women'] ? cat[3] = 'Women' : cat[3] = 'null';
-        doc.data['Others'] ? cat[4] = 'Others' : cat[4] = 'null';
-        setState(() {
-          showSpinner = false;
-        });
-        break;
+    try {
+      QuerySnapshot us =
+          await Firestore.instance.collection('categories').getDocuments();
+      for (var doc in us.documents) {
+        if (doc.data['sender'] == loggedInUser.email) {
+          doc.data['Food'] ? cat[0] = 'Food' : cat[0] = 'null';
+          doc.data['Shelter'] ? cat[1] = 'Shelter' : cat[1] = 'null';
+          doc.data['Clothes'] ? cat[2] = 'Clothes' : cat[2] = 'null';
+          doc.data['Women Care'] ? cat[3] = 'Women Care' : cat[3] = 'null';
+          doc.data['Others'] ? cat[4] = 'Others' : cat[4] = 'null';
+          setState(() {
+            showSpinner = false;
+          });
+          break;
+        } else {
+          setState(() {
+            showSpinner = false;
+          });
+        }
       }
-else{ 
- setState(() {
-          showSpinner = false;
-        });
- }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -74,7 +77,7 @@ else{
             children: <Widget>[
               StreamBuilder<QuerySnapshot>(
                 stream: _firestore.collection('requests').snapshots(),
-                builder: (contex, snapshot) {
+                builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final messages = snapshot.data.documents;
                     List<Padding> messageWidgets = [];

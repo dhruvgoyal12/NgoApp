@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ngo/afterRegister.dart';
+import 'package:ngo/alertUser.dart';
 import 'login.dart';
 import 'authentication.dart';
 import 'tab.dart';
@@ -19,12 +20,27 @@ class _RootPageState extends State<RootPage> {
   FirebaseUser loggedinUser;
   final _auth = FirebaseAuth.instance;
 
-  void getCurrentUser() async {
+  Future<FirebaseUser> currentUser() async {
     try {
       final user = await _auth.currentUser();
-      if (user != null) {
-        loggedinUser = user;
-      }
+      return user;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ini() async {
+    try {
+      final user = await _auth.currentUser();
+      print(user);
+      setState(() {
+        if (user != null) {
+          _authStatus = AuthStatus.signedIn;
+          loggedinUser = user;
+        } else {
+          _authStatus = AuthStatus.notSignedIn;
+        }
+      });
     } catch (e) {
       print(e);
     }
@@ -32,16 +48,11 @@ class _RootPageState extends State<RootPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    print('haha');
+    ini();
 
-    widget.auth.currentUser().then((user) {
-      getCurrentUser();
-      setState(() {
-        _authStatus =
-            user == null ? AuthStatus.notSignedIn : AuthStatus.signedIn;
-      });
-    });
+    // TODO: implement initState
   }
 
   void _signedIn() {
