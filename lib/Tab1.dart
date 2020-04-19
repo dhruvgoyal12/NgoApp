@@ -54,6 +54,7 @@ class _Tab1State extends State<Tab1> {
         });
         break;
       }
+else{ showSpinner = false;  }
     }
   }
 
