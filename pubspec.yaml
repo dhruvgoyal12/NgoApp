@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   animated_text_kit: ^2.0.0
-  font_awesome_flutter: ^8.4.0
+  
   page_transition: ^1.1.5
   firebase_core: ^0.4.4+3
   firebase_auth: 0.15.5+3

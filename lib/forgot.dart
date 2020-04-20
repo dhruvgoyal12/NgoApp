@@ -41,7 +41,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('images/register.png'),
+                    image: AssetImage('images/register.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),

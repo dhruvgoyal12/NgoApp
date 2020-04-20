@@ -62,7 +62,7 @@ class _VerificationState extends State<Verification> {
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('images/register.png'),
+                      image: AssetImage('images/register.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),

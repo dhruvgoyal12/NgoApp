@@ -44,7 +44,7 @@ class tab extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('AAS',
+                        Text('Sanjeevani',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 30,
@@ -275,7 +275,7 @@ class tab extends StatelessWidget {
                 ],
               ),
               title: Text(
-                'AAS',
+                'Sanjeevani',
                 style: TextStyle(
                   fontSize: 25,
                   letterSpacing: 0.2,
