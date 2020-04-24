@@ -1,44 +1,42 @@
 {
   "project_info": {
-
-    "project_number": "427141452906",
-    "firebase_url": "https://ngoapp-a6689.firebaseio.com",
-    "project_id": "ngoapp-a6689",
-    "storage_bucket": "ngoapp-a6689.appspot.com"
-
+    "project_number": "601341921167",
+    "firebase_url": "https://ngouser-668ff.firebaseio.com",
+    "project_id": "ngouser-668ff",
+    "storage_bucket": "ngouser-668ff.appspot.com"
   },
   "client": [
     {
       "client_info": {
-
-        "mobilesdk_app_id": "1:427141452906:android:c28f1b830f3dc5fbe46613",
+        "mobilesdk_app_id": "1:601341921167:android:5815b6b1c50991e9caedfa",
         "android_client_info": {
-          "package_name": "com.dhruvgoyal.ngo"
-
+          "package_name": "rushilmakkar.ngouser"
         }
       },
       "oauth_client": [
         {
-
-          "client_id": "427141452906-qdb986j9ssr1hbqc9ji1h44q2uoubqov.apps.googleusercontent.com",
-
+          "client_id": "601341921167-rhfvi5p6v6hpqopehfjsrmmr1ekhbpi4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "rushilmakkar.ngouser",
+            "certificate_hash": "f8032d4e45c8c716c84d56ca892dd25f89a96144"
+          }
+        },
+        {
+          "client_id": "601341921167-glm1u6htprb9rb51k0fqj86ac9b0hrsh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-
-          "current_key": "AIzaSyA4Hzk08_fLf-YnYitQsfaSUDcW_GE4OvY"
-
+          "current_key": "AIzaSyAFOH-Rd_0MjOQ_j_NZzpsOS7udAuHsJlE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-
-              "client_id": "427141452906-qdb986j9ssr1hbqc9ji1h44q2uoubqov.apps.googleusercontent.com",
-
+              "client_id": "601341921167-glm1u6htprb9rb51k0fqj86ac9b0hrsh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

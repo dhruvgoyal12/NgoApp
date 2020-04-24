@@ -1,6 +1,6 @@
-# flutter_app_last
+# ngouser
 
-A new Flutter application.
+App for user section of NGO
 
 ## Getting Started
 
