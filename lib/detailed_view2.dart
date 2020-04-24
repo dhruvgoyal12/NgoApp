@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ngo/Roundedbutton.dart';
 import 'package:ngo/rounded_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class detailed_view2 extends StatelessWidget {
   final _firestore = Firestore.instance;
@@ -18,7 +19,8 @@ class detailed_view2 extends StatelessWidget {
         location = document.data['city'],
         submitted_by = document.data['submitted_by'],
         submitter_phone_no = document.data['submitter_phone_no'],
-        category = document.data['category'];
+        category = document.data['category'],
+        coordinate = document.data['coordinate'];
 
     return Scaffold(
       backgroundColor: Colors.white30,
@@ -27,15 +29,32 @@ class detailed_view2 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Material(
-              elevation: 10.0,
-              color: Colors.white,
-              child: Image.network(
-                img_url,
-                height: 300.0,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-            ),
+                elevation: 10.0,
+                color: Colors.white,
+                child:
+                    Stack(alignment: Alignment.bottomRight, children: <Widget>[
+                  Image.network(
+                    img_url,
+                    height: 300.0,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Material(
+                          elevation: 5.0,
+                          color: Colors.white30.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: MaterialButton(
+                            onPressed: () {
+                              launch(
+                                  'https://www.google.com/maps/dir/?api=1&destination=$coordinate');
+                            },
+                            minWidth: 10.0,
+                            height: 42.0,
+                            child: Icon(Icons.location_searching),
+                          ))),
+                ])),
             Row(
               children: <Widget>[
                 Expanded(
@@ -199,6 +218,7 @@ class detailed_view2 extends StatelessWidget {
                             'submitted_by': submitted_by,
                             'submitter_phone_no': submitter_phone_no,
                             'category': category,
+                            'coordinate': coordinate,
                             //also add name and phone no. of submitter
                           });
                           document.reference.delete();
